@@ -1,0 +1,17 @@
+[Unit]
+Description=Initial cloud-init job (pre-networking)
+Wants=local-fs.target
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cloud-init init --local
+RemainAfterExit=yes
+TimeoutSec=0
+
+# Output needs to appear in instance console output
+# modified by simon as cloud-init is noisey on boot 
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target

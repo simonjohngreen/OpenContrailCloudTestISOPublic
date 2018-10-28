@@ -1,0 +1,140 @@
+This tree builds light customised Linux ISOs which are used by the Juniper PS CLOUD/SDN/NFV team mainly for testing deployments 
+
+This image is OpenSource and can be freely shared both internaly and externaly with customers
+
+The ISO image size is currently 0.8 GB
+
+The ISO motd shown below provides details of the resulting ISO image and the tools provided within it 
+
+========Start of motd=========
+This is a private build provided by the Juniper PS SDN/NFV team
+
+The VM is built using the latest Arch Linux kernel repos and is specifically designed for Cloud
+and high performance testing.
+
+This VM uses no local disks, just one shared ISO file and memory. Making it sutable for fast and
+large scale deployments and SDN NFV testing.
+
+Within VMWare the minimum core and memory requirements are fine.
+
+Within OpenStack the smallest tiny flavour is enough and in addition the HD can be removed.
+
+If your Cloud environment is configured for EC2 metadata then parameters such as hostname will be set 5 seconds after boot
+
+Please send enhancement Requests to sgreen@juniper.net
+
+Recent Improvements and overview Follow:
+
+0) Juniper PS Logo on Boot
+1) Latest kernel 4.5.1 so decent performance with iperf3 vs. stock Linux distros
+2) The boot no longer waits for an enter key to be hit
+3) Open VMware Tools are Installed
+4) The keyboard boots as uk, you can change it with
+        loadkeys [layout]
+        Ex: loadkeys be-latin1
+5) Network test tools have been added tcpdump,traceroute,tshark(cli based wireshark),iperf3
+6) sshd is enabled be default, password is simon123
+7) scapy is installed, usefull tool to flood and to build packets
+8) Cloud-init collects EC2 config metadata on boot (only started if http://169.254.169.254 responds)
+9) Serial enabled so 'virsh console [vm name] works'
+10) New packages can be installed via the internet with pacman
+        ex: pacman -Syu       (update the database)
+        ex: pacman -S emacs   (install emacs)
+
+**********************************
+To connect to this VM remotely ssh root@[ip]
+Password is simon123
+**********************************
+========End of motd=========
+
+To build the ISO 
+	1) build an standard Arch linux VM (see google for this) I'm using archlinux-2016.03.01-dual.iso
+	2) install git and clone this repo over to the vm
+	3) ./build.sh -v
+	4) After around 5 minutes the bootable linux ISO will appear in out/
+
+To rebuild
+	1) rm -rf work
+	2) rm ./out/*
+	3) ./build.sh -v
+
+To modify and make your own images for CLOUD/SDN/NFV testing
+	1) The file packages.both contains a list of arch packages to instal into the ISO during the build. 
+	2) All packages are fetched from the configured arch repos during the build
+	3) The directory aifsroot contains a custom file tree thats copied into the ISO (replacing any existing files)
+	4) aifsroot/root/customize_airootfs.sh is a list of custom commands to execute witin the chroot image during the ISO build
+	5) There is a daemon installed and started on boot for running post scripts "juniperps.service" it currently runs /usr/bin/juniperps-startup.sh
+	6) For more info seach google for arch wiki [??]
+
+A full package list follows:
+==========================
+arch-install-scripts
+b43-fwcutter
+btrfs-progs
+clonezilla
+crda
+darkhttpd
+ddrescue
+dhclient
+dialog
+dmraid
+dnsmasq
+dnsutils
+dosfstools
+elinks
+ethtool
+f2fs-tools
+fsarchiver
+gnu-netcat
+gpm
+gptfdisk
+grml-zsh-config
+grub
+hdparm
+ipw2100-fw
+ipw2200-fw
+irssi
+lftp
+linux-atm
+mc
+mtools
+nfs-utils
+nilfs-utils
+nmap
+ntfs-3g
+ntp
+openconnect
+openssh
+openvpn
+partclone
+parted
+partimage
+ppp
+pptpclient
+refind-efi
+rfkill
+rp-pppoe
+rsync
+smartmontools
+speedtouch
+sudo
+tcpdump
+testdisk
+usb_modeswitch
+vim-minimal
+vpnc
+wget
+wireless_tools
+wpa_actiond
+wvdial
+xl2tpd
+zd1211-firmware
+cloud-init
+zsh
+traceroute
+wireshark-cli
+open-vm-tools
+iperf
+iperf3
+scapy
+python2-requests

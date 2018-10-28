@@ -1,0 +1,13 @@
+[Unit]
+Description=Juniper PS script runs post boot
+Wants=sshdgenkeys.service
+After=sshdgenkeys.service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/juniperps-startup.sh
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target 
+

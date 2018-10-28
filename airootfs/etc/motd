@@ -1,0 +1,34 @@
+************************************************
+OpenContrailCloudTestISO V1
+===========================
+This is a public build provided by the Juniper PS SDN/NFV team
+
+The VM is built using the latest Arch Linux kernel repos and is specifically designed for Cloud
+and high performance testing.
+
+This VM uses no local disks, just one shared ISO file and memory. Making it sutable for fast and
+large scale deployments and SDN NFV testing.
+
+Please send enhancement Requests to sgreen@juniper.net
+
+Recent Improvements and overview Follow:
+
+1) Latest kernel 4.5.1 so decent performance with iperf3 vs. stock Linux distros
+2) The boot no longer waits for an enter key to be hit
+3) Open VMware Tools are Installed
+4) The keyboard boots as uk, you can change it with
+        loadkeys [layout]
+        Ex: loadkeys be-latin1
+5) Network test tools have been added tcpdump,traceroute,tshark(cli based wireshark),iperf3
+6) sshd is enabled be default, password is simon123
+7) scapy is installed, usefull tool to flood and to build packets
+8) Cloud-init collects EC2 config metadata on boot (only started if http://169.254.169.254 responds) 
+9) Serial enabled so 'virsh console [vm name] works'
+10) New packages can be installed via the internet with pacman
+        ex: pacman -Syu       (update the database)
+        ex: pacman -S emacs   (install emacs)
+
+**********************************
+To connect to this VM remotely ssh root@[ip]
+Password is simon123
+**********************************
